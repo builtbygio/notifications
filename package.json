@@ -3,10 +3,11 @@
   "main": "./lib/main",
   "version": "0.72.1",
   "description": "A tidy way to display Atom notifications.",
-  "repository": "https://github.com/atom/notifications",
+  "repository": "https://github.com/builtbygio/notifications",
   "license": "MIT",
   "engines": {
-    "atom": ">0.50.0"
+    "atom": ">0.50.0",
+    "chevron": "*"
   },
   "dependencies": {
     "dompurify": "^1.0.3",
