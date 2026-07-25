@@ -620,13 +620,13 @@ ReferenceError: path is not defined
           const stack = `\
 Unexpected string
   at nodeTransforms.Literal (/usr/share/atom/resources/app/node_modules/season/node_modules/cson-parser/lib/parse.js:100:15)
-  at ${path.join('packageDir', 'grammars', 'broken-grammar.cson')}:1:1\
+  at ${path.join('packageDir', 'grammars', 'broken-grammar.json')}:1:1\
 `;
           const detail = `\
 At Syntax error on line 241, column 18: evalmachine.<anonymous>:1
 "#\\{" "end": "\\}"
        ^^^^^
-Unexpected string in ${path.join('packageDir', 'grammars', 'broken-grammar.cson')}
+Unexpected string in ${path.join('packageDir', 'grammars', 'broken-grammar.json')}
 
 SyntaxError: Syntax error on line 241, column 18: evalmachine.<anonymous>:1
 "#\\{" "end": "\\}"
