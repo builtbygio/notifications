@@ -2,7 +2,6 @@ createDOMPurify = require 'dompurify'
 fs = require 'fs-plus'
 path = require 'path'
 marked = require 'marked'
-{shell} = require 'electron'
 
 NotificationIssue = require './notification-issue'
 TemplateHelper = require './template-helper'
@@ -233,7 +232,7 @@ class NotificationElement
             e.preventDefault()
             issueButton.classList.add('opening')
             @issue.getIssueUrlForSystem().then (issueUrl) ->
-              shell.openExternal(issueUrl)
+              atom.applicationDelegate.openExternal(issueUrl)
               issueButton.classList.remove('opening')
 
         return
