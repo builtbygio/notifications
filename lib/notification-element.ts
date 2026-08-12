@@ -136,7 +136,7 @@ module.exports =
         metaContainer = this.element.querySelector('.meta');
         metaContainer.appendChild(TemplateHelper.render(this.metaTemplate));
         const description = this.element.querySelector('.description');
-        description.innerHTML = marked(metaContent);
+        description.innerHTML = DOMPurify.sanitize(marked(metaContent));
       }
 
       if (options.buttons && (options.buttons.length > 0)) {
