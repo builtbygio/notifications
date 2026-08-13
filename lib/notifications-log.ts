@@ -9,7 +9,7 @@ declare const atom: any
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
 let NotificationsLog;
-const {Emitter, CompositeDisposable, Disposable} = require('atom');
+const {Emitter, CompositeDisposable, Disposable} = require('chevron');
 const NotificationsLogItem = require('./notifications-log-item');
 
 const typeIcons = {

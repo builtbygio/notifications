@@ -12,7 +12,7 @@ const os = require('os');
 const fs = require('fs');
 const path = require('path');
 const semver = require('semver');
-const {BufferedProcess} = require('atom');
+const {BufferedProcess} = require('chevron');
 
 /*
 A collection of methods for retrieving information about the user's system for

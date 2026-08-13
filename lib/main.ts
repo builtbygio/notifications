@@ -8,7 +8,7 @@ declare const atom: any
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
-const {Notification, CompositeDisposable} = require('atom');
+const {Notification, CompositeDisposable} = require('chevron');
 const fs = require('fs-plus');
 let StackTraceParser = null;
 const NotificationElement = require('./notification-element');
