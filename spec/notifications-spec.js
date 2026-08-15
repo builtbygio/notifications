@@ -742,14 +742,14 @@ SyntaxError: Syntax error on line 241, column 18: evalmachine.<anonymous>:1
           expect(fatalError).toBeDefined();
           expect(fatalError).toHaveClass('has-close');
           expect(fatalError.innerHTML).toContain('ReferenceError: a is not defined');
-          expect(fatalError.innerHTML).toContain('bug in Atom');
+          expect(fatalError.innerHTML).toContain('bug in Chevron');
           expect(fatalError.issue.getPackageName()).toBeUndefined();
 
           const button = fatalError.querySelector('.btn');
-          expect(button.textContent).toContain('Create issue on atom/atom');
+          expect(button.textContent).toContain('Create issue on builtbygio/chevron');
 
           expect(issueBody).toContain('ReferenceError: a is not defined');
-          return expect(issueBody).toContain('**Thrown From**: Atom Core');
+          return expect(issueBody).toContain('**Thrown From**: Chevron core');
         });
 
         it("contains the commands that the user run in the issue body", () => expect(issueBody).toContain('some-package:a-command'));
@@ -933,7 +933,7 @@ SyntaxError: Syntax error on line 241, column 18: evalmachine.<anonymous>:1
         });
       });
 
-      describe("when Atom is out of date", function() {
+      describe("when Chevron is out of date", function() {
         beforeEach(function() {
           const installedVersion = '0.179.0';
           spyOn(atom, 'getVersion').andCallFake(() => installedVersion);
@@ -956,14 +956,14 @@ SyntaxError: Syntax error on line 241, column 18: evalmachine.<anonymous>:1
           return expect(button).not.toExist();
         });
 
-        it("tells the user that Atom is out of date", function() {
+        it("tells the user that Chevron is out of date", function() {
           const fatalNotification = fatalError.querySelector('.fatal-notification');
-          return expect(fatalNotification.textContent).toContain('Atom is out of date');
+          return expect(fatalNotification.textContent).toContain('Chevron is out of date');
         });
 
         return it("provides a link to the latest released version", function() {
           const fatalNotification = fatalError.querySelector('.fatal-notification');
-          return expect(fatalNotification.innerHTML).toContain('<a href="https://github.com/atom/atom/releases/tag/v0.180.0">latest version</a>');
+          return expect(fatalNotification.innerHTML).toContain('<a href="https://github.com/builtbygio/chevron/releases/tag/v0.180.0">latest version</a>');
         });
       });
 

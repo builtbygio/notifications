@@ -200,7 +200,7 @@ module.exports =
         issueButton.remove();
         fatalNotification.textContent = `The error was thrown from the ${packageName} package. `;
       } else {
-        fatalNotification.textContent = "This is likely a bug in Atom. ";
+        fatalNotification.textContent = "This is likely a bug in Chevron. ";
       }
 
       // We only show the create issue button if it's clearly in atom core or in a package with a repo url
@@ -208,13 +208,13 @@ module.exports =
         if ((packageName != null) && (repoUrl != null)) {
           issueButton.textContent = `Create issue on the ${packageName} package`;
         } else {
-          issueButton.textContent = "Create issue on atom/atom";
+          issueButton.textContent = "Create issue on builtbygio/chevron";
         }
 
         const promises = [];
-        promises.push(this.issue.findSimilarIssues());
-        promises.push(UserUtilities.checkAtomUpToDate());
-        if (packageName != null) { promises.push(UserUtilities.checkPackageUpToDate(packageName)); }
+        promises.push(this.issue.findSimilarIssues().catch(() => null));
+        promises.push(UserUtilities.checkAtomUpToDate().catch(() => null));
+        if (packageName != null) { promises.push(UserUtilities.checkPackageUpToDate(packageName).catch(() => null)); }
 
         return Promise.all(promises).then(allData => {
           let issue;
@@ -253,16 +253,16 @@ Removing the locally installed version may fix this issue.\
             if (fs.isSymbolicLinkSync(packagePath)) {
               fatalNotification.innerHTML += `\
 <br><br>
-Use: <code>apm unlink ${packagePath}</code>\
+Use: <code>cpm unlink ${packagePath}</code>\
 `;
             }
           } else if ((atomCheck != null) && !atomCheck.upToDate) {
             issueButton.remove();
 
             fatalNotification.innerHTML += `\
-Atom is out of date: ${atomCheck.installedVersion} installed;
+Chevron is out of date: ${atomCheck.installedVersion} installed;
 ${atomCheck.latestVersion} latest.
-Upgrading to the <a href='https://github.com/atom/atom/releases/tag/v${atomCheck.latestVersion}'>latest version</a> may fix this issue.\
+Upgrading to the <a href='https://github.com/builtbygio/chevron/releases/tag/v${atomCheck.latestVersion}'>latest version</a> may fix this issue.\
 `;
           } else {
             fatalNotification.innerHTML += " You can help by creating an issue. Please explain what actions triggered this error.";
@@ -270,7 +270,9 @@ Upgrading to the <a href='https://github.com/atom/atom/releases/tag/v${atomCheck
               e.preventDefault();
               issueButton.classList.add('opening');
               return this.issue.getIssueUrlForSystem().then(function(issueUrl) {
-                atom.applicationDelegate.openExternal(issueUrl);
+                if (issueUrl) {
+                  atom.applicationDelegate.openExternal(issueUrl);
+                }
                 return issueButton.classList.remove('opening');
               });
             });

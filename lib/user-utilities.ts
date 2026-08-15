@@ -145,16 +145,21 @@ module.exports = {
       accept: 'application/vnd.github.v3+json',
       contentType: "application/json"
     });
-    return fetch('https://atom.io/api/updates', {headers: githubHeaders})
+    return fetch('https://api.github.com/repos/builtbygio/chevron/releases/latest', {headers: githubHeaders})
       .then(function(r) { if (r.ok) { return r.json(); } else { return Promise.reject(r.statusCode); } });
   },
 
   checkAtomUpToDate() {
     return this.getLatestAtomData().then(function(latestAtomData) {
       const installedVersion = __guard__(atom.getVersion(), x => x.replace(/-.*$/, ''));
-      const latestVersion = latestAtomData.name;
-      const upToDate = (installedVersion != null) && semver.gte(installedVersion, latestVersion);
-      return {upToDate, latestVersion, installedVersion};});
+      const tag = latestAtomData.tag_name || latestAtomData.name || '';
+      const latestVersion = String(tag).replace(/^v/, '');
+      const upToDate = (installedVersion != null) && latestVersion && semver.gte(installedVersion, latestVersion);
+      return {upToDate, latestVersion, installedVersion};})
+      .catch(() => {
+        const installedVersion = __guard__(atom.getVersion(), x => x.replace(/-.*$/, ''));
+        return {upToDate: true, latestVersion: installedVersion, installedVersion};
+      });
   },
 
   getPackageVersion(packageName) {

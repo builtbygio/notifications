@@ -30,7 +30,7 @@ module.exports =
 
   findSimilarIssues() {
     let repoUrl = this.getRepoUrl();
-    if (repoUrl == null) { repoUrl = 'atom/atom'; }
+    if (repoUrl == null) { repoUrl = 'builtbygio/chevron'; }
     const repo = repoUrl.replace(/http(s)?:\/\/(\d+\.)?github.com\//gi, '');
     const issueTitle = this.getIssueTitle();
     const query = `${issueTitle} repo:${repo}`;
@@ -64,14 +64,15 @@ module.exports =
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       body: `url=${encodeURIComponent(issueUrl)}`
     })
-    .then(r => r.text())
-    .catch(e => null));
+    .then(r => (r && r.ok) ? r.text() : issueUrl)
+    .then(text => (text && String(text).startsWith('http')) ? text : issueUrl)
+    .catch(() => issueUrl));
   }
 
   getIssueUrl() {
     return this.getIssueBody().then(issueBody => {
       let repoUrl = this.getRepoUrl();
-      if (repoUrl == null) { repoUrl = 'https://github.com/atom/atom'; }
+      if (repoUrl == null) { repoUrl = 'https://github.com/builtbygio/chevron'; }
       return `${repoUrl}/issues/new?title=${this.encodeURI(this.getIssueTitle())}&body=${this.encodeURI(issueBody)}`;
     });
   }
@@ -124,24 +125,18 @@ module.exports =
         } else if (packageName != null) {
           packageMessage = `'${packageName}' package v${packageVersion}`;
         } else {
-          packageMessage = 'Atom Core';
+          packageMessage = 'Chevron core';
         }
 
         this.issueBody = `\
 <!--
-Have you read Atom's Code of Conduct? By filing an Issue, you are expected to comply with it, including treating everyone with respect: https://github.com/atom/.github/blob/master/CODE_OF_CONDUCT.md
-
-Do you want to ask a question? Are you looking for support? The Atom message board is the best place for getting support: https://discuss.atom.io
+File this on builtbygio/chevron. Treat everyone with respect.
 -->
 
 ### Prerequisites
 
-* [ ] Put an X between the brackets on this line if you have done all of the following:
-    * Reproduced the problem in Safe Mode: <https://flight-manual.atom.io/hacking-atom/sections/debugging/#using-safe-mode>
-    * Followed all applicable steps in the debugging guide: <https://flight-manual.atom.io/hacking-atom/sections/debugging/>
-    * Checked the FAQs on the message board for common solutions: <https://discuss.atom.io/c/faq>
-    * Checked that your issue isn't already filed: <https://github.com/issues?q=is%3Aissue+user%3Aatom>
-    * Checked that there is not already an Atom package that provides the described functionality: <https://atom.io/packages>
+* [ ] Reproduced the problem
+* [ ] Checked existing issues: <https://github.com/builtbygio/chevron/issues>
 
 ### Description
 
@@ -163,7 +158,7 @@ Do you want to ask a question? Are you looking for support? The Atom message boa
 
 ### Versions
 
-**Atom**: ${atom.getVersion()} ${process.arch}
+**Chevron**: ${atom.getVersion()} ${process.arch}
 **Electron**: ${process.versions.electron}
 **OS**: ${systemName}
 **Thrown From**: ${packageMessage}
@@ -244,6 +239,15 @@ ${copyText}\
     if (packageName) { return packageName; }
 
     packageName = __guard__(/\\\.atom\\packages\\([^\\]+)\\/.exec(filePath), x3 => x3[1]);
+    if (packageName) { return packageName; }
+
+    packageName = __guard__(/\/\.chevron\/dev\/packages\/([^\/]+)\//.exec(filePath), x4 => x4[1]);
+    if (packageName) { return packageName; }
+
+    packageName = __guard__(/\/\.chevron\/packages\/([^\/]+)\//.exec(filePath), x5 => x5[1]);
+    if (packageName) { return packageName; }
+
+    packageName = __guard__(/\\\.chevron\\packages\\([^\\]+)\\/.exec(filePath), x6 => x6[1]);
     if (packageName) { return packageName; }
   }
 

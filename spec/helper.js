@@ -41,8 +41,13 @@ module.exports = {
         });
       }
 
-      if (url.indexOf('atom.io/api/updates') > -1) {
-        return(jsonPromise((options != null ? options.atomResponse : undefined) != null ? (options != null ? options.atomResponse : undefined) : {name: atom.getVersion()}));
+      if (url.indexOf('atom.io/api/updates') > -1 || url.indexOf('repos/builtbygio/chevron/releases/latest') > -1) {
+        const fallback = {name: atom.getVersion(), tag_name: `v${atom.getVersion()}`};
+        const resp = (options != null ? options.atomResponse : undefined) != null ? (options != null ? options.atomResponse : undefined) : fallback;
+        if (resp.tag_name == null && resp.name != null) {
+          resp.tag_name = /^v/.test(resp.name) ? resp.name : `v${resp.name}`;
+        }
+        return jsonPromise(resp);
       }
 
       if ((options != null ? options.issuesErrorResponse : undefined) != null) {
