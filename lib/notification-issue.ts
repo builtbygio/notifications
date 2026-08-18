@@ -158,7 +158,7 @@ File this on builtbygio/chevron. Treat everyone with respect.
 
 ### Versions
 
-**Chevron**: ${atom.getVersion()} ${process.arch}
+**Chevron**: ${chevron.getVersion()} ${process.arch}
 **Electron**: ${process.versions.electron}
 **OS**: ${systemName}
 **Thrown From**: ${packageMessage}
