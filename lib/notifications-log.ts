@@ -39,7 +39,7 @@ module.exports = (NotificationsLog = (function() {
       if (typesHidden != null) { this.typesHidden = typesHidden; }
       this.emitter = new Emitter;
       this.subscriptions = new CompositeDisposable;
-      this.subscriptions.add(atom.notifications.onDidClearNotifications(() => this.clearLogItems()));
+      this.subscriptions.add(chevron.notifications.onDidClearNotifications(() => this.clearLogItems()));
       this.render();
       this.subscriptions.add(new Disposable(() => this.clearLogItems()));
     }
@@ -64,18 +64,18 @@ module.exports = (NotificationsLog = (function() {
         this.list.classList.toggle(`hide-${type}`, this.typesHidden[type]);
         button.dataset.type = type;
         button.addEventListener('click', e => this.toggleType(e.target.dataset.type));
-        this.subscriptions.add(atom.tooltips.add(button, {title: `Toggle ${type} notifications`}));
+        this.subscriptions.add(chevron.tooltips.add(button, {title: `Toggle ${type} notifications`}));
         header.appendChild(button);
       }
 
       button = document.createElement('button');
       button.classList.add('notifications-clear-log', 'btn', 'icon', 'icon-trashcan');
-      button.addEventListener('click', e => atom.commands.dispatch(atom.views.getView(atom.workspace), "notifications:clear-log"));
-      this.subscriptions.add(atom.tooltips.add(button, {title: "Clear notifications"}));
+      button.addEventListener('click', e => chevron.commands.dispatch(chevron.views.getView(chevron.workspace), "notifications:clear-log"));
+      this.subscriptions.add(chevron.tooltips.add(button, {title: "Clear notifications"}));
       header.appendChild(button);
 
       let lastNotification = null;
-      for (var notification of Array.from(atom.notifications.getNotifications())) {
+      for (var notification of Array.from(chevron.notifications.getNotifications())) {
         if (lastNotification != null) {
           // do not show duplicates unless some amount of time has passed
           var timeSpan = notification.getTimestamp() - lastNotification.getTimestamp();

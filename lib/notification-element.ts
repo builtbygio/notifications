@@ -188,10 +188,10 @@ module.exports =
       const issueButton = fatalContainer.querySelector('.btn-issue');
 
       const copyReportButton = fatalContainer.querySelector('.btn-copy-report');
-      atom.tooltips.add(copyReportButton, {title: copyReportButton.getAttribute('title')});
+      chevron.tooltips.add(copyReportButton, {title: copyReportButton.getAttribute('title')});
       copyReportButton.addEventListener('click', e => {
         e.preventDefault();
-        return this.issue.getIssueBody().then(issueBody => atom.clipboard.write(issueBody));
+        return this.issue.getIssueBody().then(issueBody => chevron.clipboard.write(issueBody));
       });
 
       if ((packageName != null) && (repoUrl != null)) {
@@ -231,7 +231,7 @@ module.exports =
             issueButton.addEventListener('click', function(e) {
               e.preventDefault();
               const command = 'settings-view:check-for-package-updates';
-              return atom.commands.dispatch(atom.views.getView(atom.workspace), command);
+              return chevron.commands.dispatch(chevron.views.getView(chevron.workspace), command);
             });
 
             fatalNotification.innerHTML += `\
@@ -249,7 +249,7 @@ ${packageCheck.versionShippedWithAtom} included with the version of Atom you're 
 Removing the locally installed version may fix this issue.\
 `;
 
-            const packagePath = __guard__(atom.packages.getLoadedPackage(packageName), x => x.path);
+            const packagePath = __guard__(chevron.packages.getLoadedPackage(packageName), x => x.path);
             if (fs.isSymbolicLinkSync(packagePath)) {
               fatalNotification.innerHTML += `\
 <br><br>
@@ -271,7 +271,7 @@ Upgrading to the <a href='https://github.com/builtbygio/chevron/releases/tag/v${
               issueButton.classList.add('opening');
               return this.issue.getIssueUrlForSystem().then(function(issueUrl) {
                 if (issueUrl) {
-                  atom.applicationDelegate.openExternal(issueUrl);
+                  chevron.applicationDelegate.openExternal(issueUrl);
                 }
                 return issueButton.classList.remove('opening');
               });
@@ -306,9 +306,9 @@ Upgrading to the <a href='https://github.com/builtbygio/chevron/releases/tag/v${
     }
 
     handleRemoveAllNotificationsClick() {
-      const notifications = atom.notifications.getNotifications();
+      const notifications = chevron.notifications.getNotifications();
       for (var notification of Array.from(notifications)) {
-        atom.views.getView(notification).removeNotification();
+        chevron.views.getView(notification).removeNotification();
         if (notification.isDismissable() && !notification.isDismissed()) {
           notification.dismiss();
         }
@@ -336,7 +336,7 @@ Upgrading to the <a href='https://github.com/builtbygio/chevron/releases/tag/v${
     }
 
     removeNotificationAfterTimeout() {
-      if (this.element === document.activeElement) { atom.workspace.getActivePane().activate(); }
+      if (this.element === document.activeElement) { chevron.workspace.getActivePane().activate(); }
 
       return setTimeout(() => {
         return this.element.remove();

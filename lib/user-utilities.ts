@@ -134,8 +134,8 @@ module.exports = {
 
   getNonCorePackages() {
     return new Promise(function(resolve, reject) {
-      const nonCorePackages = atom.packages.getAvailablePackageMetadata().filter(p => !atom.packages.isBundledPackage(p.name));
-      const devPackageNames = atom.packages.getAvailablePackagePaths().filter(p => p.includes(DEV_PACKAGE_PATH)).map(p => path.basename(p));
+      const nonCorePackages = chevron.packages.getAvailablePackageMetadata().filter(p => !chevron.packages.isBundledPackage(p.name));
+      const devPackageNames = chevron.packages.getAvailablePackagePaths().filter(p => p.includes(DEV_PACKAGE_PATH)).map(p => path.basename(p));
       return resolve(Array.from(nonCorePackages).map((pack) => `${pack.name} ${pack.version} ${Array.from(devPackageNames).includes(pack.name) ? '(dev)' : ''}`));
     });
   },
@@ -151,24 +151,24 @@ module.exports = {
 
   checkAtomUpToDate() {
     return this.getLatestAtomData().then(function(latestAtomData) {
-      const installedVersion = __guard__(atom.getVersion(), x => x.replace(/-.*$/, ''));
+      const installedVersion = __guard__(chevron.getVersion(), x => x.replace(/-.*$/, ''));
       const tag = latestAtomData.tag_name || latestAtomData.name || '';
       const latestVersion = String(tag).replace(/^v/, '');
       const upToDate = (installedVersion != null) && latestVersion && semver.gte(installedVersion, latestVersion);
       return {upToDate, latestVersion, installedVersion};})
       .catch(() => {
-        const installedVersion = __guard__(atom.getVersion(), x => x.replace(/-.*$/, ''));
+        const installedVersion = __guard__(chevron.getVersion(), x => x.replace(/-.*$/, ''));
         return {upToDate: true, latestVersion: installedVersion, installedVersion};
       });
   },
 
   getPackageVersion(packageName) {
-    const pack = atom.packages.getLoadedPackage(packageName);
+    const pack = chevron.packages.getLoadedPackage(packageName);
     return (pack != null ? pack.metadata.version : undefined);
   },
 
   getPackageVersionShippedWithAtom(packageName) {
-    return require(path.join(atom.getLoadSettings().resourcePath, 'package.json')).packageDependencies[packageName];
+    return require(path.join(chevron.getLoadSettings().resourcePath, 'package.json')).packageDependencies[packageName];
   },
 
   getLatestPackageData(packageName) {

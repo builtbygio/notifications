@@ -111,7 +111,7 @@ module.exports =
         const options = this.notification.getOptions();
         const repoUrl = this.getRepoUrl();
         const packageName = this.getPackageName();
-        if (packageName != null) { packageVersion = __guard__(__guard__(atom.packages.getLoadedPackage(packageName), x1 => x1.metadata), x => x.version); }
+        if (packageName != null) { packageVersion = __guard__(__guard__(chevron.packages.getLoadedPackage(packageName), x1 => x1.metadata), x => x.version); }
         const copyText = '';
         const systemUser = process.env.USER;
         let rootUserStatus = '';
@@ -211,11 +211,11 @@ ${copyText}\
   getRepoUrl() {
     const packageName = this.getPackageName();
     if (packageName == null) { return; }
-    let repo = __guard__(__guard__(atom.packages.getLoadedPackage(packageName), x1 => x1.metadata), x => x.repository);
+    let repo = __guard__(__guard__(chevron.packages.getLoadedPackage(packageName), x1 => x1.metadata), x => x.repository);
     let repoUrl = (repo != null ? repo.url : undefined) != null ? (repo != null ? repo.url : undefined) : repo;
     if (!repoUrl) {
       let packagePath;
-      if (packagePath = atom.packages.resolvePackagePath(packageName)) {
+      if (packagePath = chevron.packages.resolvePackagePath(packageName)) {
         try {
           repo = __guard__(JSON.parse(fs.readFileSync(path.join(packagePath, 'package.json'))), x2 => x2.repository);
           repoUrl = (repo != null ? repo.url : undefined) != null ? (repo != null ? repo.url : undefined) : repo;
@@ -308,7 +308,7 @@ ${copyText}\
 
   getPackagePathsByPackageName() {
     const packagePathsByPackageName = {};
-    for (var pack of Array.from(atom.packages.getLoadedPackages())) {
+    for (var pack of Array.from(chevron.packages.getLoadedPackages())) {
       packagePathsByPackageName[pack.name] = pack.path;
     }
     return packagePathsByPackageName;

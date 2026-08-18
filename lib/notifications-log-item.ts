@@ -27,13 +27,13 @@ module.exports = (NotificationsLogItem = (function() {
     }
 
     render() {
-      const notificationView = atom.views.getView(this.notification);
+      const notificationView = chevron.views.getView(this.notification);
       const notificationElement = this.renderNotification(notificationView);
 
       this.timestamp = document.createElement('div');
       this.timestamp.classList.add('timestamp');
       this.notification.moment = moment(this.notification.getTimestamp());
-      this.subscriptions.add(atom.tooltips.add(this.timestamp, {title: this.notification.moment.format("ll LTS")}));
+      this.subscriptions.add(chevron.tooltips.add(this.timestamp, {title: this.notification.moment.format("ll LTS")}));
       this.updateTimestamp();
       this.timestampInterval = setInterval(this.updateTimestamp.bind(this), 60 * 1000);
       this.subscriptions.add(new Disposable(() => clearInterval(this.timestampInterval)));
@@ -74,8 +74,8 @@ module.exports = (NotificationsLogItem = (function() {
             const newEvent = new MouseEvent('click', e);
             return e.target.originalButton.dispatchEvent(newEvent);
           });
-          for (var tooltip of Array.from(atom.tooltips.findTooltips(button))) {
-            this.subscriptions.add(atom.tooltips.add(logButton, tooltip.options));
+          for (var tooltip of Array.from(chevron.tooltips.findTooltips(button))) {
+            this.subscriptions.add(chevron.tooltips.add(logButton, tooltip.options));
           }
           buttons.appendChild(logButton);
         }

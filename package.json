@@ -1,7 +1,7 @@
 {
   "name": "notifications",
   "main": "./lib/main",
-  "version": "0.72.3",
+  "version": "0.72.4",
   "description": "A tidy way to display Chevron notifications.",
   "repository": "https://github.com/builtbygio/notifications",
   "license": "MIT",

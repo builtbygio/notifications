@@ -52,7 +52,7 @@ module.exports =
     }
 
     start() {
-      return atom.commands.onWillDispatch(event => {
+      return chevron.commands.onWillDispatch(event => {
         return this.logCommand(event);
       });
     }
